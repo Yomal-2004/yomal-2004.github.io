@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+    <title>Yomal Daluwatta</title>
     <style>
         /* Design System Tokens */
         :root {
@@ -43,17 +43,6 @@
             scroll-behavior: smooth;
             position: relative;
             transition: background-color 0.4s ease, color 0.4s ease;
-        }
-
-        /* Fullscreen Network Particle Canvas */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            pointer-events: none;
         }
 
         /* Sticky Glassmorphic Header Navigation Bar */
@@ -217,8 +206,8 @@
 
         .photo-wrapper {
             position: relative;
-            width: 280px;
-            height: 297.9px;
+            width: 300px;
+            height: 340px;
             border-radius: var(--corner-radius);
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
             padding: 3px; 
@@ -957,16 +946,735 @@
                 right: 20px;
             }
         }
+
+        /* ===== Projects Slider (testimonial-style, 4 columns per page) ===== */
+        .projects-slider {
+            position: relative;
+        }
+
+        .projects-viewport {
+            overflow: hidden;
+        }
+
+        .projects-track {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .projects-page {
+            grid-area: 1 / 1;
+            min-width: 0;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1.25rem;
+        }
+
+        /* Static card (no hover / tilt animation) */
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(19, 26, 38, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--corner-radius);
+            padding: 1.25rem;
+            min-width: 0;
+            transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="light"] .project-card {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Same border highlight as the cards in the other sections */
+        .project-card:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .project-card .card-inner-layer {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .project-card .card-heading-title {
+            font-size: 1.05rem;
+            line-height: 1.35;
+        }
+
+        .project-card .card-label-tagline {
+            font-size: 0.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-card p {
+            font-size: 0.88rem;
+        }
+
+        .project-thumb {
+            width: 100%;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-glow);
+            background: #1a2333;
+            overflow: hidden;
+        }
+
+        [data-theme="light"] .project-thumb {
+            background: #e2e8f0;
+        }
+
+        .project-thumb img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .project-thumb.placeholder {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(37, 99, 235, 0.22));
+            color: var(--text-sub);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .project-card .pill-cluster {
+            margin-top: 0.75rem;
+            gap: 0.4rem;
+        }
+
+        /* No hover animation on pills inside project cards */
+        .project-card .tech-pill {
+            transition: none;
+            font-size: 0.75rem;
+        }
+
+        .project-card .tech-pill:hover {
+            background: #1e293b;
+            color: #cbd5e1;
+        }
+
+        [data-theme="light"] .project-card .tech-pill:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .project-open-row {
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+
+        .project-open-btn {
+            transition: none;
+            font-size: 0.85rem;
+            padding: 0.55rem 1.2rem;
+        }
+
+        .project-open-btn:hover {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: var(--border-glow);
+            transform: none;
+        }
+
+        /* Side buttons: left and right of the section */
+        .slider-side-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 1px solid var(--border-glow);
+            background: var(--bg-panel);
+            color: var(--text-main);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .slider-side-btn svg {
+            width: 22px;
+            height: 22px;
+            pointer-events: none;
+        }
+
+        .slider-side-btn.prev { left: -26px; }
+        .slider-side-btn.next { right: -26px; }
+
+        .slider-side-btn:focus-visible,
+        .slider-dot:focus-visible {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 3px;
+        }
+
+        .slider-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-top: 2rem;
+        }
+
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 10px;
+            border: none;
+            padding: 0;
+            background: var(--border-glow);
+            cursor: pointer;
+        }
+
+        .slider-dot.active {
+            width: 28px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+        }
+
+        .slider-counter {
+            text-align: center;
+            margin-top: 0.9rem;
+            color: var(--text-sub);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        @media(max-width: 1000px) {
+            .projects-page {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media(max-width: 560px) {
+            .projects-page {
+                grid-template-columns: 1fr;
+            }
+
+            .slider-side-btn {
+                width: 44px;
+                height: 44px;
+            }
+
+            .slider-side-btn.prev { left: -12px; }
+            .slider-side-btn.next { right: -12px; }
+        }
+
+        /* 3 cards per page (Achievements & Certifications) */
+        .projects-page.cols-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        @media(max-width: 1000px) {
+            .projects-page.cols-3 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media(max-width: 560px) {
+            .projects-page.cols-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Certificate image area (Achievements & Certifications) */
+        .project-thumb.cert-thumb {
+            height: auto;
+            aspect-ratio: 4 / 3;
+            position: relative;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(37, 99, 235, 0.22));
+        }
+
+        .cert-thumb .cert-thumb-label {
+            color: var(--text-sub);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .cert-thumb.has-img .cert-thumb-label {
+            display: none;
+        }
+
+        .cert-thumb img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            max-width: none;
+            max-height: none;
+            object-fit: contain;
+            border-radius: 0;
+        }
+
+        /* ===== Skills: full-frame image cards + details window ===== */
+        .skills-matrix-node.skill-card {
+            position: relative;
+            overflow: hidden;
+            padding: 0;
+            min-height: 240px;
+            background-image: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(37, 99, 235, 0.22));
+        }
+
+        .skill-card-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.45s ease, transform 0.45s ease;
+        }
+
+        .skill-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(8, 12, 20, 0);
+            transition: background 0.45s ease;
+            pointer-events: none;
+        }
+
+        .skill-readmore {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 2;
+            transform: translate(-50%, -40%);
+            opacity: 0;
+            visibility: hidden;
+            cursor: pointer;
+            white-space: nowrap;
+            background: rgba(15, 23, 42, 0.78);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+        }
+
+        .skill-readmore:hover {
+            background: rgba(15, 23, 42, 0.95);
+            border-color: var(--accent-blue);
+            transform: translate(-50%, -40%);
+        }
+
+        .skill-card:hover .skill-card-img,
+        .skill-card:focus-within .skill-card-img {
+            filter: blur(7px);
+            transform: scale(1.08);
+        }
+
+        .skill-card:hover::after,
+        .skill-card:focus-within::after {
+            background: rgba(8, 12, 20, 0.35);
+        }
+
+        .skill-card:hover .skill-readmore,
+        .skill-card:focus-within .skill-readmore {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%);
+        }
+
+        .skill-card:hover .skill-readmore:hover,
+        .skill-card:focus-within .skill-readmore:hover {
+            transform: translate(-50%, -50%);
+        }
+
+        /* Touch screens have no hover: keep the button reachable */
+        @media (hover: none) {
+            .skill-readmore {
+                opacity: 1;
+                visibility: visible;
+                top: auto;
+                bottom: 1rem;
+                transform: translateX(-50%);
+            }
+
+            .skill-card:hover .skill-readmore,
+            .skill-card:focus-within .skill-readmore,
+            .skill-readmore:hover {
+                transform: translateX(-50%);
+            }
+        }
+
+        .skill-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: rgba(5, 8, 15, 0.72);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            animation: skillModalFade 0.3s ease;
+        }
+
+        .skill-modal[hidden] {
+            display: none;
+        }
+
+        .skill-modal-box {
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--bg-panel);
+            color: var(--text-main);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--corner-radius);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+            animation: skillModalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .skill-modal-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(37, 99, 235, 0.22)) center / cover no-repeat;
+            border-bottom: 1px solid var(--border-glow);
+            border-radius: var(--corner-radius) var(--corner-radius) 0 0;
+        }
+
+        .skill-modal-body {
+            padding: 1.5rem 1.75rem 1.75rem;
+        }
+
+        .skill-modal-title {
+            font-size: 1.5rem;
+            margin: 0 0 1rem;
+            color: var(--text-main);
+        }
+
+        .skill-modal-items {
+            list-style: none;
+            margin: 0 0 1.5rem;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-modal-items li {
+            padding: 0.4rem 0.9rem;
+            border-radius: 999px;
+            border: 1px solid var(--border-glow);
+            background: rgba(56, 189, 248, 0.08);
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .skill-modal-close {
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 0.6rem 1.4rem;
+        }
+
+        @keyframes skillModalFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes skillModalPop {
+            from { opacity: 0; transform: translateY(16px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== Gallery: collage of photos (no text) ===== */
+        .gallery-collage {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-auto-rows: 190px;
+            grid-auto-flow: dense;
+            gap: 12px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-glow);
+            border-radius: var(--corner-radius);
+            background: linear-gradient(135deg, hsla(var(--h, 200), 80%, 55%, 0.22), hsla(calc(var(--h, 200) + 40), 80%, 45%, 0.28));
+        }
+
+        /* Zoom happens inside the frame: the frame itself never moves or grows */
+        .gallery-item img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transform: scale(1);
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Collage pattern (13 photos fill a 4 x 6 grid exactly) */
+        .gallery-item.g1  { grid-column: span 2; grid-row: span 2; }
+        .gallery-item.g3  { grid-row: span 2; }
+        .gallery-item.g5  { grid-column: span 2; }
+        .gallery-item.g8  { grid-row: span 2; }
+        .gallery-item.g9  { grid-column: span 2; grid-row: span 2; }
+        .gallery-item.g10 { grid-row: span 2; }
+        .gallery-item.g11 { grid-column: span 2; }
+
+        /* Placeholder tints, only visible while a photo is missing */
+        .gallery-item:nth-child(6n + 1) { --h: 200; }
+        .gallery-item:nth-child(6n + 2) { --h: 260; }
+        .gallery-item:nth-child(6n + 3) { --h: 170; }
+        .gallery-item:nth-child(6n + 4) { --h: 320; }
+        .gallery-item:nth-child(6n + 5) { --h: 30; }
+        .gallery-item:nth-child(6n + 6) { --h: 140; }
+
+        @media(max-width: 900px) {
+            .gallery-collage {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-auto-rows: 150px;
+                gap: 10px;
+            }
+        }
+
+        @media(max-width: 560px) {
+            .gallery-collage {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-auto-rows: 120px;
+                gap: 8px;
+            }
+        }
+
+        /* Menu spacing: room for the Gallery link on desktop (mobile menu unchanged) */
+        @media(min-width: 901px) {
+            nav ul {
+                gap: 1.25rem;
+            }
+        }
+
+        /* ===== Footer: social icons on the left, copyright stays centered ===== */
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-social {
+            display: flex;
+            align-items: center;
+            justify-self: start;
+            gap: 0.75rem;
+        }
+
+        .footer-social-link {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--border-glow);
+            color: var(--text-sub);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .footer-social-link svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .footer-social-link:hover,
+        .footer-social-link:focus-visible {
+            color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        @media(max-width: 900px) {
+            .footer-inner {
+                padding: 0 1.25rem;
+            }
+        }
+
+        @media(max-width: 700px) {
+            .footer-inner {
+                grid-template-columns: 1fr;
+                justify-items: center;
+                gap: 1.25rem;
+            }
+
+            .footer-social {
+                justify-self: center;
+            }
+
+            .footer-spacer {
+                display: none;
+            }
+        }
+
+        /* Header logo: click to go back to the top */
+        .brand-logo {
+            cursor: pointer;
+        }
+
+        .brand-logo:focus {
+            outline: none;
+        }
+
+        .brand-logo:focus-visible {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 4px;
+            border-radius: 6px;
+        }
+
+        /* Skills: 2 cards per row, 16:9 card size */
+        .skills-matrix-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .skills-matrix-node.skill-card {
+            aspect-ratio: 16 / 9;
+            min-height: 0;
+        }
+
+        /* Small screens: smaller Read more button so it fits the 16:9 cards */
+        @media(max-width: 480px) {
+            .skills-matrix-grid {
+                gap: 0.75rem;
+            }
+
+            .skill-readmore {
+                font-size: 0.72rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        @media (hover: none) and (max-width: 480px) {
+            .skill-readmore {
+                bottom: 0.5rem;
+            }
+        }
+
+        /* Skills slider: one row, 2 cards per page */
+        .projects-page.cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* room so the existing card hover lift is not clipped by the slider */
+        #skills-slider .projects-viewport {
+            padding: 12px;
+            margin: -12px;
+        }
+
+        @media(max-width: 480px) {
+            .projects-page.cols-2 {
+                gap: 0.75rem;
+            }
+        }
+
+        /* ===== Light mode: white & blue palette (from the reference portfolio) =====
+           primary #2563eb, primary-dark #1d4ed8, primary-light #3b82f6,
+           white #ffffff / #f8fafc, text #0f172a / #475569, borders #e2e8f0 */
+        [data-theme="light"] {
+            --accent-blue: #2563eb;
+            --accent-purple: #1d4ed8;
+        }
+
+        /* soft blue glows instead of sky / violet ones */
+        @keyframes pulseGlowLight {
+            0% {
+                box-shadow: 0 10px 30px rgba(37, 99, 235, 0.18);
+            }
+            100% {
+                box-shadow: 0 20px 45px rgba(37, 99, 235, 0.32);
+            }
+        }
+
+        [data-theme="light"] .photo-wrapper {
+            animation-name: pulseGlowLight;
+        }
+
+        [data-theme="light"] .interactive-panel-card::before {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.06) 0%, rgba(59, 130, 246, 0.06) 100%);
+        }
+
+        [data-theme="light"] .skills-matrix-node:hover {
+            box-shadow: 0 12px 25px rgba(37, 99, 235, 0.12);
+        }
+
+        [data-theme="light"] .chatbot-trigger:hover {
+            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.2);
+        }
+
+        [data-theme="light"] .chat-avatar,
+        [data-theme="light"] .chat-bubble.user,
+        [data-theme="light"] .chat-send-btn {
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        [data-theme="light"] .chat-chip:hover {
+            background: rgba(37, 99, 235, 0.08);
+        }
+
+        /* blue tags, like the reference */
+        [data-theme="light"] .tech-pill {
+            background: rgba(37, 99, 235, 0.08);
+            color: #2563eb;
+        }
+
+        [data-theme="light"] .tech-pill:hover {
+            background: var(--accent-purple);
+            color: #ffffff;
+        }
+
+        [data-theme="light"] .project-card .tech-pill:hover {
+            background: rgba(37, 99, 235, 0.08);
+            color: #2563eb;
+        }
+
+        /* photo placeholders and detail window chips in blue */
+        [data-theme="light"] .project-thumb.placeholder,
+        [data-theme="light"] .project-thumb.cert-thumb,
+        [data-theme="light"] .skill-modal-image {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(59, 130, 246, 0.18)) center / cover no-repeat;
+        }
+
+        [data-theme="light"] .skills-matrix-node.skill-card {
+            background-image: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(59, 130, 246, 0.18));
+        }
+
+        [data-theme="light"] .gallery-item {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(59, 130, 246, 0.18));
+        }
+
+        [data-theme="light"] .skill-modal-items li {
+            background: rgba(37, 99, 235, 0.08);
+            color: #2563eb;
+            border-color: rgba(37, 99, 235, 0.25);
+        }
     </style>
 </head>
 <body>
 
-    <!-- Particle Network Background Canvas -->
-    <canvas id="particle-canvas"></canvas>
 
     <header>
         <nav>
-            <div class="brand-logo">MY PORTFOLIO</div>
+            <div class="brand-logo" id="brand-home" role="link" tabindex="0">YOMAL DALUWATTA</div>
             
             <input type="checkbox" id="menu-toggle" class="menu-toggle">
             <label for="menu-toggle" class="menu-btn">
@@ -979,8 +1687,9 @@
                 <li><a href="#about" onclick="document.getElementById('menu-toggle').checked = false;">About</a></li>
                 <li><a href="#education" onclick="document.getElementById('menu-toggle').checked = false;">Education</a></li>
                 <li><a href="#projects" onclick="document.getElementById('menu-toggle').checked = false;">Projects</a></li>
-                <li><a href="#achievements & certifications" onclick="document.getElementById('menu-toggle').checked = false;">Achievements & Certifications</a></li>
+                <li><a href="#achievements & certifications" onclick="document.getElementById('menu-toggle').checked = false;">Certifications</a></li>
                 <li><a href="#skills" onclick="document.getElementById('menu-toggle').checked = false;">Skills</a></li>
+                <li><a href="#gallery" onclick="document.getElementById('menu-toggle').checked = false;">Gallery</a></li>
                 <li><a href="#contact" onclick="document.getElementById('menu-toggle').checked = false;">Contact</a></li>
                 <li><button id="theme-toggle" class="theme-toggle-btn">🌙 Dark</button></li>
             </ul>
@@ -991,7 +1700,7 @@
 
         <section id="about" class="hero-layout reveal">
             <div class="hero-content">
-                <h1>Hello, I'm Gaveshika Nirmani</h1>
+                <h1>Hello, I'm Yomal Daluwatta</h1>
                 <p>I am an aspiring Data Science Undergraduate Student with a passion for building clean, efficient, and user-centric web applications. Focused on continuous learning and solving complex real-world problems through robust code.</p>
                 <div class="cta-row">
                     <a href="my_resume.pdf" class="action-link btn-filled" download>Download CV</a>
@@ -1000,7 +1709,7 @@
             </div>
             <div class="photo-wrapper">
                 <div class="photo-inner-clip">
-                    <img src="profile.jpeg" class="profile-media" alt="Profile Picture">
+                    <img src="profile.jpg" class="profile-media" alt="Profile Picture">
                 </div>
             </div>
         </section>
@@ -1019,8 +1728,26 @@
                 </div>
                 <div class="timeline-block">
                     <div class="timeline-indicator-node"></div>
+                    <h3 style="font-size: 1.3rem;">WEBCOMMS</h3>
+                    <div style="color: var(--accent-blue); font-weight: 600; font-size: 0.95rem; margin: 0.25rem 0;">Work as a developer (2024 Octomber - 2025 November)</div>
+                    <p style="color: var(--text-sub); max-width: 720px;">Successfully completed secondary education in the Technology stream.</p>
+                </div>
+                <div class="timeline-block">
+                    <div class="timeline-indicator-node"></div>
+                    <h3 style="font-size: 1.3rem;">DP IT Campus Yatiyantota</h3>
+                    <div style="color: var(--accent-blue); font-weight: 600; font-size: 0.95rem; margin: 0.25rem 0;">Do projects - over 250 (2024 January - 2024 September)</div>
+                    <p style="color: var(--text-sub); max-width: 720px;">Successfully completed secondary education in the Technology stream.</p>
+                </div>
+                <div class="timeline-block">
+                    <div class="timeline-indicator-node"></div>
                     <h3 style="font-size: 1.3rem;">G.C.E. Advanced Level</h3>
-                    <div style="color: var(--accent-blue); font-weight: 600; font-size: 0.95rem; margin: 0.25rem 0;">G/Neluwa National School (Completed - 2023)</div>
+                    <div style="color: var(--accent-blue); font-weight: 600; font-size: 0.95rem; margin: 0.25rem 0;">Rajasinghe Central College Ruwanwella (Completed - 2023)</div>
+                    <p style="color: var(--text-sub); max-width: 720px;">Successfully completed secondary education in the Physical Science stream.</p>
+                </div>
+                <div class="timeline-block">
+                    <div class="timeline-indicator-node"></div>
+                    <h3 style="font-size: 1.3rem;">G.C.E. Ordinary Level</h3>
+                    <div style="color: var(--accent-blue); font-weight: 600; font-size: 0.95rem; margin: 0.25rem 0;">Rajasinghe Central College Ruwanwella (Completed - 2020)</div>
                     <p style="color: var(--text-sub); max-width: 720px;">Successfully completed secondary education in the Technology stream.</p>
                 </div>
             </div>
@@ -1031,127 +1758,248 @@
                 <h2>Projects</h2>
                 <p>A focused collection of engineered software utilities developed from scratch.</p>
             </div>
-            <div class="dashboard-grid">
-                <div class="interactive-panel-card">
-                    <div style="width: 100%; display: flex; justify-content: center; align-items: center; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border-glow); background: #1a2333; padding: 0.5rem; overflow: hidden;">
-                        <img src="project_preview.jpg" alt="Student Record Management System Screenshot" style="max-width: 100%; max-height: 350px; width: auto; height: auto; border-radius: 4px; transition: var(--smooth-transition);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                    </div>
-                    <div class="card-inner-layer">
-                        <h3 class="card-heading-title">Student Record Management System</h3>
-                        <div class="card-label-tagline">Data Management Application</div>
-                        <p style="color: var(--text-sub); font-size: 0.95rem;">A comprehensive solution for managing student records with a focus on data integrity and user efficiency.</p>
-                        <div class="pill-cluster">
-                            <span class="tech-pill">Python tkinter</span>
+            <div class="projects-slider" id="projects-slider" aria-roledescription="carousel" aria-label="Projects">
+                <button type="button" class="slider-side-btn prev" id="projects-prev" aria-label="Previous projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                <button type="button" class="slider-side-btn next" id="projects-next" aria-label="Next projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                <div class="projects-viewport">
+                    <div class="projects-track" id="projects-track">
+                <div class="projects-page" role="group" aria-roledescription="slide">
+                    <article class="project-card">
+                        <div class="project-thumb">
+                                <img src="projects/p1.jpg"Student Record Management System Screenshot">
+                            </div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Student Record Management System</h3>
+                            <div class="card-label-tagline">Data Management Application</div>
+                            <p style="color: var(--text-sub);">A comprehensive solution for managing student records with a focus on data integrity and user efficiency.</p>
+                            <div class="pill-cluster"><span class="tech-pill">Python tkinter</span></div>
+                            <div class="project-open-row">
+                                <a href="https://github.com/Yomal-2004/Student-Record-Management-System" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
+                            </div>
                         </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb placeholder" aria-hidden="true">02</div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Sales Forecasting Model</h3>
+                            <div class="card-label-tagline">Machine Learning (Example)</div>
+                            <p style="color: var(--text-sub);">Time-series forecasting pipeline that predicts monthly sales and reports clear error metrics.</p>
+                            <div class="pill-cluster"><span class="tech-pill">Python</span><span class="tech-pill">scikit-learn</span></div>
+                            <div class="project-open-row">
+                                <a href="https://github.com/Yomal-2004/sales-forecasting-model" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb placeholder" aria-hidden="true">03</div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Customer Churn Predictor</h3>
+                            <div class="card-label-tagline">Data Science (Example)</div>
+                            <p style="color: var(--text-sub);">Classification model that flags customers likely to leave, with feature importance and a simple report.</p>
+                            <div class="pill-cluster"><span class="tech-pill">R</span><span class="tech-pill">Random Forest</span></div>
+                            <div class="project-open-row">
+                                <a href="https://github.com/Yomal-2004/customer-churn-predictor" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb placeholder" aria-hidden="true">04</div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Azure Data Pipeline</h3>
+                            <div class="card-label-tagline">Data Engineering (Example)</div>
+                            <p style="color: var(--text-sub);">Automated ETL workflow that ingests raw files, cleans them and loads analysis-ready tables.</p>
+                            <div class="pill-cluster"><span class="tech-pill">Azure</span><span class="tech-pill">SQL</span><span class="tech-pill">Python</span></div>
+                            <div class="project-open-row">
+                                <a href="https://github.com/Yomal-2004/azure-data-pipeline" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div class="projects-page" role="group" aria-roledescription="slide">
+                    <article class="project-card">
+                        <div class="project-thumb placeholder" aria-hidden="true">05</div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Sentiment Analysis Dashboard</h3>
+                            <div class="card-label-tagline">NLP (Example)</div>
+                            <p style="color: var(--text-sub);">Interactive dashboard that scores customer reviews and summarises key positive and negative themes.</p>
+                            <div class="pill-cluster"><span class="tech-pill">Python</span><span class="tech-pill">NLTK</span></div>
+                            <div class="project-open-row">
+                                <a href="https://github.com/Yomal-2004/sentiment-analysis-dashboard" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb placeholder" aria-hidden="true">06</div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Portfolio Chatbot</h3>
+                            <div class="card-label-tagline">Web Application (Example)</div>
+                            <p style="color: var(--text-sub);">Lightweight rule-based assistant that answers visitor questions about skills, education and projects.</p>
+                            <div class="pill-cluster"><span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JavaScript</span></div>
+                            <div class="project-open-row">
+                                <a href="https://github.com/Yomal-2004/portfolio-chatbot" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb placeholder" aria-hidden="true">07</div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Library Management System</h3>
+                            <div class="card-label-tagline">Java Application (Example)</div>
+                            <p style="color: var(--text-sub);">Desktop application for tracking books, members and loans with a clean, validated data layer.</p>
+                            <div class="pill-cluster"><span class="tech-pill">Java</span><span class="tech-pill">SQL</span></div>
+                            <div class="project-open-row">
+                                <a href="https://github.com/Yomal-2004/library-management-system" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb placeholder" aria-hidden="true">08</div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">COVID-19 Data Explorer</h3>
+                            <div class="card-label-tagline">Data Visualisation (Example)</div>
+                            <p style="color: var(--text-sub);">Exploratory analysis of public health data with charts and region-level comparisons.</p>
+                            <div class="pill-cluster"><span class="tech-pill">Python</span><span class="tech-pill">Matplotlib</span></div>
+                            <div class="project-open-row">
+                                <a href="https://github.com/Yomal-2004/covid-data-explorer" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
                     </div>
                 </div>
+                <div class="slider-dots" id="projects-dots"></div>
+                <div class="slider-counter" id="projects-counter" aria-live="polite"></div>
             </div>
         </section>
 
         <section id="achievements & certifications" class="reveal">
             <div class="heading-group">
-                <h2>Achievements & Certifications</h2>
+                <h2>Certifications</h2>
                 <p>Industry qualifications, badges, and competitive technical recognition scales.</p>
             </div>
-            <div class="dashboard-grid">
-                <div class="interactive-panel-card">   
-                    <div class="card-inner-layer">
-                        <h3 class="card-heading-title">Data Science - Work with Data </h3>
-                        <div class="card-label-tagline"> Course from Alison - 2026</div>
-                        <p style="color: var(--text-sub); font-size: 0.95rem;">Building Data pipelines and analyzing datasets with Azure AI, Python, and R.</p>
-                        <div style="margin-top: 1.5rem;">
-                            <a href="alison_certificate_01.pdf" target="_blank" class="action-link btn-bordered" style="font-size: 0.85rem; padding: 0.6rem 1.2rem;">Certificate pdf</a>
+            <div class="projects-slider" id="certs-slider" aria-roledescription="carousel" aria-label="Certifications">
+                <button type="button" class="slider-side-btn prev" id="certs-prev" aria-label="Previous certificates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                <button type="button" class="slider-side-btn next" id="certs-next" aria-label="Next certificates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                <div class="projects-viewport">
+                    <div class="projects-track" id="certs-track">
+                <div class="projects-page cols-3" role="group" aria-roledescription="slide">
+                    <article class="project-card">
+                        <div class="project-thumb cert-thumb">
+                            <span class="cert-thumb-label">Certificate image</span>
+                            <img src="certificates/c1.jpg" alt="Data Science - Work with Data certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
                         </div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Data Science - Work with Data</h3>
+                            <div class="project-open-row">
+                                <a href="certificates/c1.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb cert-thumb">
+                            <span class="cert-thumb-label">Certificate image</span>
+                            <img src="certificates/c2.jpg" alt="Data Science - Visualizing Data and Exploring Models certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
+                        </div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Data Science - Visualizing Data and Exploring Models</h3>
+                            <div class="project-open-row">
+                                <a href="certificates/c2.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb cert-thumb">
+                            <span class="cert-thumb-label">Certificate image</span>
+                            <img src="certificates/c3.jpg" alt="Data Science and Business Analytics certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
+                        </div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Data Science and Business Analytics</h3>
+                            <div class="project-open-row">
+                                <a href="certificates/c3.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div class="projects-page cols-3" role="group" aria-roledescription="slide">
+                    <article class="project-card">
+                        <div class="project-thumb cert-thumb">
+                            <span class="cert-thumb-label">Certificate image</span>
+                            <img src="Microsoft_Azure_certificate.jpg" alt="Introduction to Microsoft Azure Data Relational data in Azure certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
+                        </div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Introduction to Microsoft Azure Data Relational data in Azure</h3>
+                            <div class="project-open-row">
+                                <a href="Microsoft_Azure_certificate.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb cert-thumb">
+                            <span class="cert-thumb-label">Certificate image</span>
+                            <img src="Coursera_certificate 01.jpg" alt="Build a free website with WordPress certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
+                        </div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Build a free website with WordPress</h3>
+                            <div class="project-open-row">
+                                <a href="Coursera_certificate 01.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb cert-thumb">
+                            <span class="cert-thumb-label">Certificate image</span>
+                            <img src="Coursera_certificate 02.jpg" alt="Graphic design certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
+                        </div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Graphic design</h3>
+                            <div class="project-open-row">
+                                <a href="Coursera_certificate 02.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div class="projects-page cols-3" role="group" aria-roledescription="slide">
+                    <article class="project-card">
+                        <div class="project-thumb cert-thumb">
+                            <span class="cert-thumb-label">Certificate image</span>
+                            <img src="Coursera_certificate 03.jpg" alt="Getting Started in Google Analytics certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
+                        </div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Getting Started in Google Analytics</h3>
+                            <div class="project-open-row">
+                                <a href="Coursera_certificate 03.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb cert-thumb">
+                            <span class="cert-thumb-label">Certificate image</span>
+                            <img src="Simplilearn_certificate 02.jpg" alt="Become a Data Scientist: Statistics for Data Science certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
+                        </div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Become a Data Scientist: Statistics for Data Science</h3>
+                            <div class="project-open-row">
+                                <a href="Simplilearn_certificate 02.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb cert-thumb">
+                            <span class="cert-thumb-label">Certificate image</span>
+                            <img src="Coursera_certificate 04.jpg" alt="Working with BigQuery certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
+                        </div>
+                        <div class="card-inner-layer">
+                            <h3 class="card-heading-title">Working with BigQuery</h3>
+                            <div class="project-open-row">
+                                <a href="Coursera_certificate 04.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
                     </div>
                 </div>
-
-                <div class="interactive-panel-card">
-                    <div class="card-inner-layer">
-                        <h3 class="card-heading-title">Data Science - Visualizing Data and Exploring Models</h3>
-                        <div class="card-label-tagline"> Course from Alison - 2026</div>
-                        <p style="color: var(--text-sub); font-size: 0.95rem;">Visualizing data and exploring machine learning models using Python and Azure AI.</p>
-                        <div style="margin-top: 1.5rem;">
-                            <a href="alison_certificate_02.pdf" target="_blank" class="action-link btn-bordered" style="font-size: 0.85rem; padding: 0.6rem 1.2rem;">Certificate pdf</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="interactive-panel-card">
-                    <div class="card-inner-layer">
-                        <h3 class="card-heading-title">Data Science and Business Analytics</h3>
-                        <div class="card-label-tagline"> Course from Simplilearn - 2026</div>
-                        <p style="color: var(--text-sub); font-size: 0.95rem;">Mastering core data science concepts, data analysis, and predictive modeling techniques using industry-standard tools.</p>
-                        <div style="margin-top: 1.5rem;">
-                            <a href="Simplilearn_certificate.pdf" target="_blank" class="action-link btn-bordered" style="font-size: 0.85rem; padding: 0.6rem 1.2rem;">Certificate pdf</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="interactive-panel-card">
-                    <div class="card-inner-layer">
-                        <h3 class="card-heading-title">Introduction to Microsoft Azure Data Relational data in Azure</h3>
-                        <div class="card-label-tagline">Course from Microsoft - 2026</div>
-                        <p style="color: var(--text-sub); font-size: 0.95rem;">Foundational guide that teaches how structured, table-based databases like SQL Server, MySQL, and PostgreSQL are hosted, managed, and scaled efficiently in the Microsoft cloud.</p>
-                        <div style="margin-top: 1.5rem;">
-                            <a href="Microsoft_Azure_certificate.pdf" target="_blank" class="action-link btn-bordered" style="font-size: 0.85rem; padding: 0.6rem 1.2rem;">Certificate pdf</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="interactive-panel-card">
-                    <div class="card-inner-layer">
-                        <h3 class="card-heading-title">Build a free website with WordPress</h3>
-                        <div class="card-label-tagline">Course from Coursera - 2026</div>
-                        <p style="color: var(--text-sub); font-size: 0.95rem;">Learn how to create and manage a professional website using WordPress, the leading content management system.</p>
-                        <div style="margin-top: 1.5rem;">
-                            <a href="Coursera_certificate 01.pdf" target="_blank" class="action-link btn-bordered" style="font-size: 0.85rem; padding: 0.6rem 1.2rem;">Certificate pdf</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="interactive-panel-card">
-                    <div class="card-inner-layer">
-                        <h3 class="card-heading-title">Graphic design</h3>
-                        <div class="card-label-tagline">Course from Coursera - 2026</div>
-                        <p style="color: var(--text-sub); font-size: 0.95rem;">Learn the fundamentals of graphic design and how to use industry-standard tools to create compelling visual content.</p>
-                        <div style="margin-top: 1.5rem;">
-                            <a href="Coursera_certificate 02.pdf" target="_blank" class="action-link btn-bordered" style="font-size: 0.85rem; padding: 0.6rem 1.2rem;">Certificate pdf</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="interactive-panel-card">
-                    <div class="card-inner-layer">
-                        <h3 class="card-heading-title">Getting Started in Google Analytics</h3>
-                        <div class="card-label-tagline">Course from Coursera - 2026</div>
-                        <p style="color: var(--text-sub); font-size: 0.95rem;">Learn how to use Google Analytics to track and analyze website performance.</p>
-                        <div style="margin-top: 1.5rem;">
-                            <a href="Coursera_certificate 03.pdf" target="_blank" class="action-link btn-bordered" style="font-size: 0.85rem; padding: 0.6rem 1.2rem;">Certificate pdf</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="interactive-panel-card">
-                    <div class="card-inner-layer">
-                        <h3 class="card-heading-title">Become a Data Scientist: Statistics for Data Science</h3>
-                        <div class="card-label-tagline">Course from Simplilearn - 2026</div>
-                        <p style="color: var(--text-sub); font-size: 0.95rem;">Learn fundamental statistical techniques to analyze data, interpret complex patterns, and make informed business decisions using real-world data science workflows.</p>
-                        <div style="margin-top: 1.5rem;">
-                            <a href="Simplilearn_certificate 02.pdf" target="_blank" class="action-link btn-bordered" style="font-size: 0.85rem; padding: 0.6rem 1.2rem;">Certificate pdf</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="interactive-panel-card">
-                    <div class="card-inner-layer">
-                        <h3 class="card-heading-title">Working with BigQuery</h3>
-                        <div class="card-label-tagline">Course from Coursera - 2026</div>
-                        <p style="color: var(--text-sub); font-size: 0.95rem;">Learn to navigate Google BigQuery, optimize SQL queries, manage large-scale data structures, and derive actionable business insights in a cloud environment.</p>
-                        <div style="margin-top: 1.5rem;">
-                            <a href="Coursera_certificate 04.pdf" target="_blank" class="action-link btn-bordered" style="font-size: 0.85rem; padding: 0.6rem 1.2rem;">Certificate pdf</a>
-                        </div>
-                    </div>
-                </div>
+                <div class="slider-dots" id="certs-dots"></div>
+                <div class="slider-counter" id="certs-counter" aria-live="polite"></div>
             </div>
         </section>
 
@@ -1160,27 +2008,63 @@
                 <h2>Skills</h2>
                 <p>Technical proficiencies unified across academic and specialized coursework frameworks.</p>
             </div>
-            <div class="skills-matrix-grid">
-                <div class="skills-matrix-node">
-                    <div class="skills-matrix-category">Languages & Frameworks</div>
-                    <div class="skills-matrix-items">Python, R, Java, HTML, SQL</div>
+            <div class="projects-slider" id="skills-slider" aria-roledescription="carousel" aria-label="Skills">
+                <button type="button" class="slider-side-btn prev" id="skills-prev" aria-label="Previous skills"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                <button type="button" class="slider-side-btn next" id="skills-next" aria-label="Next skills"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                <div class="projects-viewport">
+                    <div class="projects-track" id="skills-track">
+                <div class="projects-page cols-2" role="group" aria-roledescription="slide">
+                    <div class="skills-matrix-node skill-card" role="group" aria-label="Languages &amp; Frameworks" data-skill-title="Languages &amp; Frameworks" data-skill-items="Python, R, Java, HTML, SQL" data-skill-image="skill_languages_frameworks.jpg">
+                        <img class="skill-card-img" src="skills/s1.png" alt="" loading="lazy" onerror="this.remove()">
+                        <button type="button" class="action-link btn-bordered skill-readmore">Read more</button>
+                    </div>
+                    <div class="skills-matrix-node skill-card" role="group" aria-label="Cloud &amp; AI Platforms" data-skill-title="Cloud &amp; AI Platforms" data-skill-items="Azure AI" data-skill-image="skill_cloud_ai.jpg">
+                        <img class="skill-card-img" src="skills/s2.png" alt="" loading="lazy" onerror="this.remove()">
+                        <button type="button" class="action-link btn-bordered skill-readmore">Read more</button>
+                    </div>
                 </div>
-                <div class="skills-matrix-node">
-                    <div class="skills-matrix-category">Cloud & AI Platforms</div>
-                    <div class="skills-matrix-items">Azure AI</div>
+                <div class="projects-page cols-2" role="group" aria-roledescription="slide">
+                    <div class="skills-matrix-node skill-card" role="group" aria-label="Data Engineering" data-skill-title="Data Engineering" data-skill-items="Data Pipelines, Dataset Analysis, Data Wrangling" data-skill-image="skill_data_engineering.jpg">
+                        <img class="skill-card-img" src="skills/s3.png" alt="" loading="lazy" onerror="this.remove()">
+                        <button type="button" class="action-link btn-bordered skill-readmore">Read more</button>
+                    </div>
+                    <div class="skills-matrix-node skill-card" role="group" aria-label="Data Science &amp; ML" data-skill-title="Data Science &amp; ML" data-skill-items="Predictive Modeling, Machine Learning Models, Core Statistical Concepts" data-skill-image="skill_data_science_ml.jpg">
+                        <img class="skill-card-img" src="skill_data_science_ml.jpg" alt="" loading="lazy" onerror="this.remove()">
+                        <button type="button" class="action-link btn-bordered skill-readmore">Read more</button>
+                    </div>
                 </div>
-                <div class="skills-matrix-node">
-                    <div class="skills-matrix-category">Data Engineering</div>
-                    <div class="skills-matrix-items">Data Pipelines, Dataset Analysis, Data Wrangling</div>
+                <div class="projects-page cols-2" role="group" aria-roledescription="slide">
+                    <div class="skills-matrix-node skill-card" role="group" aria-label="Business Intelligence" data-skill-title="Business Intelligence" data-skill-items="Business Analytics, Data Visualization, Insights Generation" data-skill-image="skill_business_intelligence.jpg">
+                        <img class="skill-card-img" src="skill_business_intelligence.jpg" alt="" loading="lazy" onerror="this.remove()">
+                        <button type="button" class="action-link btn-bordered skill-readmore">Read more</button>
+                    </div>
                 </div>
-                <div class="skills-matrix-node">
-                    <div class="skills-matrix-category">Data Science & ML</div>
-                    <div class="skills-matrix-items">Predictive Modeling, Machine Learning Models, Core Statistical Concepts</div>
+                    </div>
                 </div>
-                <div class="skills-matrix-node">
-                    <div class="skills-matrix-category">Business Intelligence</div>
-                    <div class="skills-matrix-items">Business Analytics, Data Visualization, Insights Generation</div>
-                </div>
+                <div class="slider-dots" id="skills-dots"></div>
+                <div class="slider-counter" id="skills-counter" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <section id="gallery" class="reveal">
+            <div class="heading-group">
+                <h2>Gallery</h2>
+            </div>
+            <div class="gallery-collage">
+                <div class="gallery-item g1"><img src="gallery/g1.jpg" alt="Gallery photo 1" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g1"><img src="gallery/g2.jpg" alt="Gallery photo 1" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g2"><img src="gallery/g4.jpg" alt="Gallery photo 2" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g3"><img src="gallery/g3.jpg" alt="Gallery photo 3" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g4"><img src="gallery/g6.jpg" alt="Gallery photo 4" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g5"><img src="gallery/g7.jpg" alt="Gallery photo 5" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g6"><img src="gallery/g6.jpg" alt="Gallery photo 6" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g7"><img src="gallery/g5.jpg" alt="Gallery photo 7" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g8"><img src="gallery_08.jpg" alt="Gallery photo 8" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g9"><img src="gallery_09.jpg" alt="Gallery photo 9" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g10"><img src="gallery_10.jpg" alt="Gallery photo 10" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g11"><img src="gallery_11.jpg" alt="Gallery photo 11" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g12"><img src="gallery_12.jpg" alt="Gallery photo 12" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g13"><img src="gallery_13.jpg" alt="Gallery photo 13" loading="lazy" onerror="this.remove()"></div>
             </div>
         </section>
 
@@ -1189,13 +2073,26 @@
                 <h2 style="font-size: 2.25rem; margin-bottom: 1rem; font-weight: 800;">Let's Initiate a Conversation.</h2>
                 <p>I am actively exploring prospective internships, open-source collaborative efforts, or technical research projects. Reach out directly through any connection endpoint.</p>
                 <div class="cta-row" style="justify-content: center; flex-wrap: wrap;">
-                    <a href="https://github.com/gaviNirmani" target="_blank" class="action-link btn-filled">GitHub Profile</a>
-                    <a href="https://linkedin.com/in/gaveshika-nirmani-827443301" target="_blank" class="action-link btn-filled">LinkedIn Profile</a>
-                    <a href="mailto:gaveshikan@gmail.com" class="action-link btn-filled">Send Direct Email</a>
+                    <a href="https://github.com/Yomal-2004" target="_blank" class="action-link btn-filled">GitHub Profile</a>
+                    <a href="https://linkedin.com/in/yomal-daluwatta" target="_blank" class="action-link btn-filled">LinkedIn Profile</a>
+                    <a href="mailto:yomalcharu7@gmail.com" class="action-link btn-filled">Send Direct Email</a>
                 </div>
             </div>
         </section>
 
+    </div>
+
+    <!-- SKILL DETAILS WINDOW -->
+    <div class="skill-modal" id="skill-modal" hidden>
+        <div class="skill-modal-box" role="dialog" aria-modal="true" aria-labelledby="skill-modal-title">
+            <div class="skill-modal-image" id="skill-modal-image"></div>
+            <div class="skill-modal-body">
+                <div class="skills-matrix-category">Skill details</div>
+                <h3 class="skill-modal-title" id="skill-modal-title"></h3>
+                <ul class="skill-modal-items" id="skill-modal-items"></ul>
+                <button type="button" class="action-link btn-bordered skill-modal-close" id="skill-modal-close">Close</button>
+            </div>
+        </div>
     </div>
 
     <!-- MODERNIZED AI CHATBOT UI -->
@@ -1209,7 +2106,7 @@
             <div class="chat-header-profile">
                 <div class="chat-avatar">✨</div>
                 <div class="chat-title-group">
-                    <div class="chat-title">Gaveshika's AI Agent</div>
+                    <div class="chat-title">Yomal's AI Agent</div>
                     <div class="chat-subtitle">
                         <span class="chat-subtitle-dot"></span>
                         Online | Interactive Guide
@@ -1222,7 +2119,7 @@
         <div class="chat-messages" id="chat-messages">
             <div class="chat-message-row bot-row">
                 <div class="msg-avatar">🤖</div>
-                <div class="chat-bubble bot">Hello! 👋 I am Gaveshika's portfolio assistant. What would you like to explore today?</div>
+                <div class="chat-bubble bot">Hello! 👋 I am Yomal's portfolio assistant. What would you like to explore today?</div>
             </div>
         </div>
 
@@ -1247,25 +2144,223 @@
     </div>
 
     <footer>
-        <p style="color: var(--text-sub); font-size: 0.85rem;">&copy; 2026 Gaveshika Nirmani. All rights reserved.</p>
+        <div class="footer-inner">
+            <div class="footer-social">
+                <a href="https://www.facebook.com/yomal.daluwatta" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Facebook" title="Facebook">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+                </a>
+                <a href="https://www.instagram.com/_cha_ru___/?__pwa=1#" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Instagram" title="Instagram">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.351-.2 6.78-2.618 6.98-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+                </a>
+                <a href="https://www.youtube.com/@YomalDaluwatta" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="YouTube" title="YouTube">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg>
+                </a>
+                <a href="https://www.tiktok.com/@yomaldaluwatta" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="TikTok" title="TikTok">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"></path></svg>
+                </a>
+            </div>
+            <p style="color: var(--text-sub); font-size: 0.85rem;">&copy; 2026 Yomal Daluwatta. All rights reserved.</p>
+            <span class="footer-spacer" aria-hidden="true"></span>
+        </div>
     </footer>
+
+    <!-- Particle animation source (constellation-bg.js, unchanged) - started by the script below -->
+    <script type="text/plain" id="constellation-src">
+/*!
+ * constellation-bg.js — "Cursor Web" particle background
+ * Drop-in, zero dependencies. Adds a fixed full-screen canvas behind your page.
+ *
+ * Usage (before </body>):
+ *   <script src="constellation-bg.js"><\/script>
+ *
+ * Optional settings, either as data attributes on the script tag...
+ *   <script src="constellation-bg.js" data-color="#7dd3fc" data-count="100"><\/script>
+ * ...or as a global object defined BEFORE the script:
+ *   <script>window.ConstellationConfig = { color: '#ff6ec7', count: 80 };<\/script>
+ *
+ * Remove it at any time with:  ConstellationBG.destroy()
+ */
+(function () {
+  'use strict';
+
+  var script = document.currentScript;
+  var ds = script ? script.dataset : {};
+
+  // ---- Settings (edit defaults here) -------------------------------------
+  var defaults = {
+    color: '#7dd3fc',      // line + cursor-link color
+    dotColor: '#9bbbdd',   // particle color
+    count: 100,            // max particles (auto-reduced on small screens)
+    distance: 120,         // max distance between linked particles (px)
+    cursorDistance: 170,   // max distance for cursor links (px)
+    speed: 1,              // drift speed multiplier
+    dotSize: 1.8,          // particle radius (px)
+    lineWidth: 1,          // link thickness (px)
+    lineOpacity: 0.6,      // max opacity of particle-to-particle links (0-1)
+    zIndex: -1,            // -1 = behind page content
+    respectReducedMotion: false  // false = always animate; true = show a still picture when the
+                                 // visitor's system asks for reduced motion
+  };
+
+  var o = Object.assign({}, defaults, window.ConstellationConfig || {});
+  ['color', 'dotColor'].forEach(function (k) { if (ds[k]) o[k] = ds[k]; });
+  ['count', 'distance', 'cursorDistance', 'speed', 'dotSize', 'lineWidth', 'lineOpacity', 'zIndex']
+    .forEach(function (k) { if (ds[k] !== undefined) o[k] = parseFloat(ds[k]); });
+
+  function rgb(c) {
+    var m = String(c).trim();
+    if (m[0] === '#') {
+      m = m.slice(1);
+      if (m.length === 3) m = m.split('').map(function (x) { return x + x; }).join('');
+      var n = parseInt(m, 16);
+      return (n >> 16 & 255) + ',' + (n >> 8 & 255) + ',' + (n & 255);
+    }
+    var p = m.match(/\d+/g);           // supports "rgb(125, 211, 252)" or "125,211,252"
+    return p ? p.slice(0, 3).join(',') : '125,211,252';
+  }
+  var LINE = rgb(o.color), DOT = o.dotColor;
+
+  // ---- Canvas -------------------------------------------------------------
+  var cv = document.createElement('canvas');
+  cv.setAttribute('aria-hidden', 'true');
+  cv.style.cssText =
+    'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:' + o.zIndex;
+  document.body.insertBefore(cv, document.body.firstChild);
+  var ctx = cv.getContext('2d');
+
+  var W = 0, H = 0, P = [], raf = 0, alive = true;
+  var M = { x: -9999, y: -9999 };
+  var reduce = !!o.respectReducedMotion && window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function spawn() {
+    var a = Math.random() * 6.283, s = (0.3 + Math.random() * 0.7) * o.speed;
+    return { x: Math.random() * W, y: Math.random() * H, vx: Math.cos(a) * s, vy: Math.sin(a) * s };
+  }
+
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.lineWidth = o.lineWidth;
+    var target = Math.max(18, Math.min(o.count, Math.floor(W * H / 14000)));
+    while (P.length < target) P.push(spawn());
+    if (P.length > target) P.length = target;
+    if (reduce) draw();
+  }
+
+  // ---- Render -------------------------------------------------------------
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    var n = P.length, D = o.distance, D2 = D * D, C = o.cursorDistance, C2 = C * C;
+
+    for (var i = 0; i < n; i++) {
+      var p = P[i];
+      if (!reduce) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+      }
+
+      ctx.fillStyle = DOT;
+      ctx.beginPath(); ctx.arc(p.x, p.y, o.dotSize, 0, 6.283); ctx.fill();
+
+      var cx = p.x - M.x, cy = p.y - M.y, cd = cx * cx + cy * cy;
+      if (cd < C2) {
+        ctx.strokeStyle = 'rgba(' + LINE + ',' + (1 - Math.sqrt(cd) / C).toFixed(3) + ')';
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(M.x, M.y); ctx.stroke();
+      }
+
+      for (var j = i + 1; j < n; j++) {
+        var q = P[j], dx = p.x - q.x, dy = p.y - q.y, d2 = dx * dx + dy * dy;
+        if (d2 < D2) {
+          ctx.strokeStyle = 'rgba(' + LINE + ',' + ((1 - Math.sqrt(d2) / D) * o.lineOpacity).toFixed(3) + ')';
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function loop() {
+    if (!alive) return;
+    draw();
+    raf = requestAnimationFrame(loop);
+  }
+
+  // ---- Events -------------------------------------------------------------
+  function onMove(e) { M.x = e.clientX; M.y = e.clientY; }
+  function onLeave() { M.x = M.y = -9999; }
+  function onUp(e) { if (e.pointerType === 'touch') onLeave(); }
+  var t;
+  function onResize() { clearTimeout(t); t = setTimeout(resize, 120); }
+
+  window.addEventListener('pointermove', onMove, { passive: true });
+  window.addEventListener('pointerup', onUp, { passive: true });
+  document.addEventListener('mouseleave', onLeave);
+  window.addEventListener('resize', onResize);
+
+  resize();
+  if (!reduce) loop();
+
+  // ---- Public API ---------------------------------------------------------
+  window.ConstellationBG = {
+    destroy: function () {
+      alive = false; cancelAnimationFrame(raf);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      document.removeEventListener('mouseleave', onLeave);
+      window.removeEventListener('resize', onResize);
+      if (cv.parentNode) cv.parentNode.removeChild(cv);
+    }
+  };
+})();
+    </script>
 
     <!-- Interactive UI, Theme Toggle, Modernized Chatbot & Background Canvas Script -->
     <script>
+        // --- CONSTELLATION BACKGROUND (constellation-bg.js, built into this page) ---
+        // The script source is unchanged; it is started here with colours for the active theme.
+        // Calm look: fewer dots, shorter and fainter links, slower drift, softer dots.
+        // (script defaults were: count 100, distance 120, speed 1, dotSize 1.8, lineOpacity 0.6)
+        const CONSTELLATION_CALM = {
+            count: 50,             // max particles
+            distance: 110,         // max distance between linked particles (px)
+            cursorDistance: 150,   // cursor links (px)
+            speed: 0.5,            // drift speed
+            dotSize: 1.5,          // particle radius (px)
+            lineOpacity: 0.3       // max opacity of links
+        };
+        const CONSTELLATION_COLORS = {
+            dark:  { color: '#7dd3fc', dotColor: 'rgba(155, 187, 221, 0.7)' },
+            light: { color: '#2563eb', dotColor: 'rgba(59, 130, 246, 0.65)' }
+        };
+        let constellationTheme = null;     // theme the running background was built for
+
+        function loadConstellation(theme) {
+            if (constellationTheme === theme) return;
+
+            if (window.ConstellationBG) window.ConstellationBG.destroy();
+            window.ConstellationConfig = Object.assign({}, CONSTELLATION_CALM, CONSTELLATION_COLORS[theme] || CONSTELLATION_COLORS.dark);
+
+            const s = document.createElement('script');
+            s.textContent = document.getElementById('constellation-src').textContent;
+            document.body.appendChild(s);      // inline scripts run immediately
+            s.remove();
+            constellationTheme = theme;
+        }
+
         // --- DARK / LIGHT THEME TOGGLE ---
         const themeToggleBtn = document.getElementById('theme-toggle');
-        let particleColor = '#38bdf8';
-
         function setTheme(theme) {
             if (theme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
                 themeToggleBtn.innerHTML = '☀️ Light';
-                particleColor = '#0284c7';
+                loadConstellation('light');
                 localStorage.setItem('theme', 'light');
             } else {
                 document.documentElement.removeAttribute('data-theme');
                 themeToggleBtn.innerHTML = '🌙 Dark';
-                particleColor = '#38bdf8';
+                loadConstellation('dark');
                 localStorage.setItem('theme', 'dark');
             }
         }
@@ -1281,713 +2376,6 @@
             const currentTheme = document.documentElement.getAttribute('data-theme');
             setTheme(currentTheme === 'light' ? 'dark' : 'light');
         });
-
-        // --- NEXT-LEVEL TECHNOLOGY PARTICLE ANIMATION ---
-
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-
-let particles = [];
-
-// Technology network settings
-const particleCount = 85;
-const maxDistance = 145;
-const mouseRadius = 180;
-
-// Mouse interaction
-let mouse = {
-    x: null,
-    y: null,
-    active: false
-};
-
-// Technology colors
-const techColors = {
-    cyan: '56, 189, 248',
-    blue: '2, 132, 199',
-    purple: '139, 92, 246',
-    white: '255, 255, 255'
-};
-
-
-// --------------------------------------------------
-// CANVAS
-// --------------------------------------------------
-
-function resizeCanvas() {
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-
-    canvas.style.width = window.innerWidth + 'px';
-    canvas.style.height = window.innerHeight + 'px';
-
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-}
-
-resizeCanvas();
-
-window.addEventListener('resize', resizeCanvas);
-
-
-// --------------------------------------------------
-// MOUSE INTERACTION
-// --------------------------------------------------
-
-window.addEventListener('mousemove', (e) => {
-
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-    mouse.active = true;
-
-});
-
-window.addEventListener('mouseleave', () => {
-
-    mouse.x = null;
-    mouse.y = null;
-    mouse.active = false;
-
-});
-
-
-// --------------------------------------------------
-// PARTICLE CLASS
-// --------------------------------------------------
-
-class Particle {
-
-    constructor() {
-
-        this.x = Math.random() * window.innerWidth;
-        this.y = Math.random() * window.innerHeight;
-
-        // Movement
-        this.vx = (Math.random() - 0.5) * 0.45;
-        this.vy = (Math.random() - 0.5) * 0.45;
-
-        // Size
-        this.radius = Math.random() * 1.8 + 0.7;
-
-        // Depth
-        this.depth = Math.random();
-
-        // Organic movement
-        this.angle = Math.random() * Math.PI * 2;
-        this.angleSpeed = (Math.random() - 0.5) * 0.015;
-
-        // Glow variation
-        this.pulse = Math.random() * Math.PI * 2;
-        this.pulseSpeed = 0.015 + Math.random() * 0.025;
-
-        // Some particles become brighter "technology nodes"
-        this.isNode = Math.random() > 0.82;
-
-    }
-
-
-    // --------------------------------------------------
-    // UPDATE
-    // --------------------------------------------------
-
-    update() {
-
-        this.angle += this.angleSpeed;
-        this.pulse += this.pulseSpeed;
-
-
-        // Subtle flowing technology movement
-        this.vx += Math.cos(this.angle) * 0.002;
-        this.vy += Math.sin(this.angle) * 0.002;
-
-
-        // Mouse interaction
-        if (
-            mouse.active &&
-            mouse.x !== null &&
-            mouse.y !== null
-        ) {
-
-            const dx = mouse.x - this.x;
-            const dy = mouse.y - this.y;
-
-            const distance = Math.sqrt(
-                dx * dx +
-                dy * dy
-            );
-
-            if (distance < mouseRadius && distance > 0) {
-
-                const force =
-                    (mouseRadius - distance) /
-                    mouseRadius;
-
-                // Gentle attraction
-                this.vx +=
-                    (dx / distance) *
-                    force *
-                    0.018;
-
-                this.vy +=
-                    (dy / distance) *
-                    force *
-                    0.018;
-
-            }
-
-        }
-
-
-        // Velocity damping
-        this.vx *= 0.995;
-        this.vy *= 0.995;
-
-
-        // Limit speed
-        const speed = Math.sqrt(
-            this.vx * this.vx +
-            this.vy * this.vy
-        );
-
-        const maxSpeed = 0.65;
-
-        if (speed > maxSpeed) {
-
-            this.vx =
-                (this.vx / speed) *
-                maxSpeed;
-
-            this.vy =
-                (this.vy / speed) *
-                maxSpeed;
-
-        }
-
-
-        // Move
-        this.x += this.vx;
-        this.y += this.vy;
-
-
-        // Screen wrapping
-        if (this.x < -20) {
-            this.x = window.innerWidth + 20;
-        }
-
-        if (this.x > window.innerWidth + 20) {
-            this.x = -20;
-        }
-
-        if (this.y < -20) {
-            this.y = window.innerHeight + 20;
-        }
-
-        if (this.y > window.innerHeight + 20) {
-            this.y = -20;
-        }
-
-    }
-
-
-    // --------------------------------------------------
-    // DRAW PARTICLE
-    // --------------------------------------------------
-
-    draw() {
-
-        const pulse =
-            0.65 +
-            Math.sin(this.pulse) * 0.25;
-
-        let radius = this.radius;
-
-        if (this.isNode) {
-            radius *= 1.6;
-        }
-
-
-        // -----------------------------
-        // Outer glow
-        // -----------------------------
-
-        const glowSize =
-            this.isNode
-                ? radius * 10
-                : radius * 6;
-
-        const gradient =
-            ctx.createRadialGradient(
-                this.x,
-                this.y,
-                0,
-                this.x,
-                this.y,
-                glowSize
-            );
-
-
-        if (this.isNode) {
-
-            gradient.addColorStop(
-                0,
-                `rgba(${techColors.cyan}, ${0.8 * pulse})`
-            );
-
-            gradient.addColorStop(
-                0.25,
-                `rgba(${techColors.blue}, ${0.25 * pulse})`
-            );
-
-        } else {
-
-            gradient.addColorStop(
-                0,
-                `rgba(${techColors.cyan}, ${0.55 * pulse})`
-            );
-
-            gradient.addColorStop(
-                0.35,
-                `rgba(${techColors.blue}, ${0.12 * pulse})`
-            );
-
-        }
-
-        gradient.addColorStop(
-            1,
-            'rgba(0,0,0,0)'
-        );
-
-
-        ctx.fillStyle = gradient;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            this.x,
-            this.y,
-            glowSize,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-
-        // -----------------------------
-        // Particle core
-        // -----------------------------
-
-        ctx.beginPath();
-
-        ctx.arc(
-            this.x,
-            this.y,
-            radius,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle =
-            `rgba(${techColors.white}, ${0.65 + pulse * 0.35})`;
-
-        ctx.fill();
-
-
-        // -----------------------------
-        // Special technology node ring
-        // -----------------------------
-
-        if (this.isNode) {
-
-            ctx.beginPath();
-
-            ctx.arc(
-                this.x,
-                this.y,
-                radius * 3,
-                0,
-                Math.PI * 2
-            );
-
-            ctx.strokeStyle =
-                `rgba(${techColors.cyan}, ${0.18 + pulse * 0.15})`;
-
-            ctx.lineWidth = 0.5;
-
-            ctx.stroke();
-
-        }
-
-    }
-
-}
-
-
-// --------------------------------------------------
-// CREATE PARTICLES
-// --------------------------------------------------
-
-for (let i = 0; i < particleCount; i++) {
-
-    particles.push(
-        new Particle()
-    );
-
-}
-
-
-// --------------------------------------------------
-// TECHNOLOGY CONNECTIONS
-// --------------------------------------------------
-
-function drawConnections() {
-
-    for (
-        let i = 0;
-        i < particles.length;
-        i++
-    ) {
-
-        for (
-            let j = i + 1;
-            j < particles.length;
-            j++
-        ) {
-
-            const p1 = particles[i];
-            const p2 = particles[j];
-
-
-            const dx =
-                p1.x - p2.x;
-
-            const dy =
-                p1.y - p2.y;
-
-            const distance =
-                Math.sqrt(
-                    dx * dx +
-                    dy * dy
-                );
-
-
-            if (distance < maxDistance) {
-
-                const strength =
-                    1 -
-                    distance / maxDistance;
-
-
-                // Gradient connection
-                const gradient =
-                    ctx.createLinearGradient(
-                        p1.x,
-                        p1.y,
-                        p2.x,
-                        p2.y
-                    );
-
-
-                gradient.addColorStop(
-                    0,
-                    `rgba(${techColors.cyan}, ${strength * 0.35})`
-                );
-
-                gradient.addColorStop(
-                    0.5,
-                    `rgba(${techColors.purple}, ${strength * 0.22})`
-                );
-
-                gradient.addColorStop(
-                    1,
-                    `rgba(${techColors.cyan}, ${strength * 0.35})`
-                );
-
-
-                ctx.strokeStyle = gradient;
-
-                ctx.lineWidth =
-                    0.35 +
-                    strength * 0.8;
-
-
-                ctx.beginPath();
-
-                ctx.moveTo(
-                    p1.x,
-                    p1.y
-                );
-
-                ctx.lineTo(
-                    p2.x,
-                    p2.y
-                );
-
-                ctx.stroke();
-
-
-                // Technology energy pulse
-                if (
-                    Math.random() <
-                    0.0015 * strength
-                ) {
-
-                    drawEnergyPulse(
-                        p1,
-                        p2
-                    );
-
-                }
-
-            }
-
-        }
-
-    }
-
-}
-
-
-// --------------------------------------------------
-// ENERGY PULSE
-// --------------------------------------------------
-
-function drawEnergyPulse(p1, p2) {
-
-    const progress =
-        (Date.now() % 1400) / 1400;
-
-
-    const x =
-        p1.x +
-        (p2.x - p1.x) *
-        progress;
-
-    const y =
-        p1.y +
-        (p2.y - p1.y) *
-        progress;
-
-
-    const glow =
-        ctx.createRadialGradient(
-            x,
-            y,
-            0,
-            x,
-            y,
-            9
-        );
-
-
-    glow.addColorStop(
-        0,
-        'rgba(255,255,255,1)'
-    );
-
-    glow.addColorStop(
-        0.25,
-        `rgba(${techColors.cyan},0.8)`
-    );
-
-    glow.addColorStop(
-        1,
-        'rgba(56,189,248,0)'
-    );
-
-
-    ctx.fillStyle = glow;
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y,
-        9,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fill();
-
-}
-
-
-// --------------------------------------------------
-// MOUSE TECHNOLOGY FIELD
-// --------------------------------------------------
-
-function drawMouseField() {
-
-    if (!mouse.active) {
-        return;
-    }
-
-
-    const gradient =
-        ctx.createRadialGradient(
-            mouse.x,
-            mouse.y,
-            0,
-            mouse.x,
-            mouse.y,
-            mouseRadius
-        );
-
-
-    gradient.addColorStop(
-        0,
-        `rgba(${techColors.cyan},0.08)`
-    );
-
-    gradient.addColorStop(
-        0.35,
-        `rgba(${techColors.blue},0.035)`
-    );
-
-    gradient.addColorStop(
-        1,
-        'rgba(0,0,0,0)'
-    );
-
-
-    ctx.fillStyle = gradient;
-
-    ctx.beginPath();
-
-    ctx.arc(
-        mouse.x,
-        mouse.y,
-        mouseRadius,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fill();
-
-
-    // Digital cursor ring
-
-    ctx.beginPath();
-
-    ctx.arc(
-        mouse.x,
-        mouse.y,
-        38 +
-        Math.sin(Date.now() * 0.004) * 5,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.strokeStyle =
-        `rgba(${techColors.cyan},0.15)`;
-
-    ctx.lineWidth = 1;
-
-    ctx.stroke();
-
-}
-
-
-// --------------------------------------------------
-// MAIN ANIMATION
-// --------------------------------------------------
-
-function animateParticles() {
-
-    ctx.clearRect(
-        0,
-        0,
-        window.innerWidth,
-        window.innerHeight
-    );
-
-
-    // Subtle atmospheric technology glow
-
-    const atmosphere =
-        ctx.createRadialGradient(
-            window.innerWidth * 0.5,
-            window.innerHeight * 0.5,
-            0,
-            window.innerWidth * 0.5,
-            window.innerHeight * 0.5,
-            Math.max(
-                window.innerWidth,
-                window.innerHeight
-            ) * 0.7
-        );
-
-
-    atmosphere.addColorStop(
-        0,
-        `rgba(${techColors.blue},0.035)`
-    );
-
-    atmosphere.addColorStop(
-        0.5,
-        `rgba(${techColors.purple},0.018)`
-    );
-
-    atmosphere.addColorStop(
-        1,
-        'rgba(0,0,0,0)'
-    );
-
-
-    ctx.fillStyle = atmosphere;
-
-    ctx.fillRect(
-        0,
-        0,
-        window.innerWidth,
-        window.innerHeight
-    );
-
-
-    // Mouse field
-    drawMouseField();
-
-
-    // Update particles
-    for (
-        let i = 0;
-        i < particles.length;
-        i++
-    ) {
-
-        particles[i].update();
-
-    }
-
-
-    // Network connections
-    drawConnections();
-
-
-    // Draw particles
-    for (
-        let i = 0;
-        i < particles.length;
-        i++
-    ) {
-
-        particles[i].draw();
-
-    }
-
-
-    requestAnimationFrame(
-        animateParticles
-    );
-
-}
-
-
-// Start
-animateParticles();
 
         // --- SCROLL REVEAL ANIMATION ---
         const observerOptions = { threshold: 0.15 };
@@ -2060,21 +2448,21 @@ animateParticles();
             const msg = userMsg.toLowerCase();
 
             if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
-                return "Hello! How can I assist you with Gaveshika's portfolio today?";
+                return "Hello! How can I assist you with Yomal's portfolio today?";
             } else if (msg.includes('skill') || msg.includes('python') || msg.includes('java') || msg.includes('language')) {
-                return "Gaveshika is skilled in Python, R, Java, HTML, SQL, Azure AI, Data Engineering, and Machine Learning modeling!";
+                return "Yomal is skilled in Python, R, Java, HTML, SQL, Azure AI, Data Engineering, and Machine Learning modeling!";
             } else if (msg.includes('education') || msg.includes('degree') || msg.includes('university') || msg.includes('school')) {
-                return "Gaveshika is studying for a BSc (Hons) in Data Science at Sri Lanka Technological Campus (SLTC) and completed secondary education at G/Neluwa National School.";
+                return "Yomal is studying for a BSc (Hons) in Data Science at Sri Lanka Technological Campus (SLTC) and completed secondary education at G/Neluwa National School.";
             } else if (msg.includes('project')) {
                 return "Featured project: A Student Record Management System engineered with Python tkinter!";
             } else if (msg.includes('certificate') || msg.includes('certification') || msg.includes('coursera') || msg.includes('alison')) {
-                return "Gaveshika holds credentials from Alison, Simplilearn, Microsoft, and Coursera in BigQuery, Data Science, Azure, WordPress, and Graphic Design!";
+                return "Yomal holds credentials from Alison, Simplilearn, Microsoft, and Coursera in BigQuery, Data Science, Azure, WordPress, and Graphic Design!";
             } else if (msg.includes('contact') || msg.includes('email') || msg.includes('github') || msg.includes('linkedin')) {
-                return "You can reach Gaveshika via email at gaveshikan@gmail.com, or check out GitHub & LinkedIn linked below!";
+                return "You can reach Yomal via email at yomalcharu7@gmail.com, or check out GitHub & LinkedIn linked below!";
             } else if (msg.includes('who are you') || msg.includes('about')) {
-                return "I'm an interactive AI assistant designed to navigate Gaveshika Nirmani's Data Science portfolio website.";
+                return "I'm an interactive AI assistant designed to navigate Yomal Daluwatta's Data Science portfolio website.";
             } else {
-                return "I'm not completely sure about that! Try asking about Gaveshika's skills, education, projects, certifications, or contact info.";
+                return "I'm not completely sure about that! Try asking about Yomal's skills, education, projects, certifications, or contact info.";
             }
         }
 
@@ -2100,6 +2488,262 @@ animateParticles();
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleSend();
         });
+
+        // --- CARD SLIDERS: Projects + Achievements & Certifications (auto play + arrows) ---
+        function initCardSlider(prefix, opts) {
+            opts = opts || {};
+            const slider = document.getElementById(prefix + '-slider');
+            if (!slider) return;
+
+            const track = document.getElementById(prefix + '-track');
+            const pages = Array.from(track.querySelectorAll('.projects-page'));
+            const prevBtn = document.getElementById(prefix + '-prev');
+            const nextBtn = document.getElementById(prefix + '-next');
+            const dotsWrap = document.getElementById(prefix + '-dots');
+            const counter = document.getElementById(prefix + '-counter');
+
+            const SLIDE_MS = 1600;    // slow-motion page slide
+            const CARD_MS = 1200;     // slow-motion card entrance
+            const CARD_STAGGER = 160; // delay between cards
+            const EASE = 'cubic-bezier(0.22, 0.61, 0.36, 1)';
+            const AUTO_MS = 3500;  // pause between automatic slides
+            const AUTO_DIR = -1;   // -1 = new cards come in from the left, 1 = from the right
+
+            let current = 0;
+            let running = null; // { finish } while a slide is playing
+            let timer = null;
+
+            function scheduleNext() {
+                clearTimeout(timer);
+                if (pages.length < 2) return;
+                timer = setTimeout(() => {
+                    // optional: wait while the visitor is interacting with the cards
+                    if (opts.isPaused && opts.isPaused()) { scheduleNext(); return; }
+                    goTo(current + 1, AUTO_DIR);
+                }, AUTO_MS);
+            }
+
+            pages.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'slider-dot';
+                dot.setAttribute('aria-label', 'Go to page ' + (i + 1));
+                dot.addEventListener('click', () => goTo(i, i > current ? 1 : -1));
+                dotsWrap.appendChild(dot);
+            });
+            const dots = Array.from(dotsWrap.children);
+
+            function showOnly(index) {
+                pages.forEach((page, i) => {
+                    page.style.visibility = i === index ? 'visible' : 'hidden';
+                    page.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+                    if (i === index) page.removeAttribute('inert');
+                    else page.setAttribute('inert', '');
+                });
+            }
+
+            function updateIndicators(index) {
+                dots.forEach((d, i) => {
+                    d.classList.toggle('active', i === index);
+                    d.setAttribute('aria-current', i === index ? 'true' : 'false');
+                });
+                counter.textContent = 'Page ' + (index + 1) + ' of ' + pages.length;
+            }
+
+            // dir = 1  -> cards come in from the right and move to the left
+            // dir = -1 -> cards come in from the left (previous)
+            function goTo(index, dir) {
+                index = (index + pages.length) % pages.length;
+
+                // A click during a slide jumps that slide to its end first,
+                // so the buttons always respond immediately.
+                if (running) running.finish();
+                clearTimeout(timer);
+                if (index === current) { scheduleNext(); return; }
+
+                const outgoing = pages[current];
+                const incoming = pages[index];
+
+                incoming.style.visibility = 'visible';
+                incoming.removeAttribute('inert');
+                incoming.setAttribute('aria-hidden', 'false');
+                updateIndicators(index);
+
+                const anims = [];
+
+                anims.push(outgoing.animate(
+                    [
+                        { transform: 'translateX(0)', opacity: 1 },
+                        { transform: 'translateX(' + (-dir * 100) + '%)', opacity: 0 }
+                    ],
+                    { duration: SLIDE_MS, easing: EASE, fill: 'forwards' }
+                ));
+
+                anims.push(incoming.animate(
+                    [
+                        { transform: 'translateX(' + (dir * 100) + '%)', opacity: 0 },
+                        { transform: 'translateX(0)', opacity: 1 }
+                    ],
+                    { duration: SLIDE_MS, easing: EASE }
+                ));
+
+                incoming.querySelectorAll('.project-card').forEach((card, i) => {
+                    anims.push(card.animate(
+                        [
+                            { transform: 'translateX(' + (dir * 60) + 'px)', opacity: 0 },
+                            { transform: 'translateX(0)', opacity: 1 }
+                        ],
+                        { duration: CARD_MS, delay: i * CARD_STAGGER, easing: EASE, fill: 'backwards' }
+                    ));
+                });
+
+                let done = false;
+                const state = {
+                    finish: () => {
+                        if (done) return;
+                        done = true;
+                        running = null;
+                        current = index;
+                        anims.forEach(a => { try { a.cancel(); } catch (e) {} });
+                        showOnly(current);
+                        scheduleNext();
+                    }
+                };
+                running = state;
+
+                Promise.all(anims.map(a => a.finished)).then(state.finish, () => {});
+            }
+
+            prevBtn.addEventListener('click', () => goTo(current - 1, -1));
+            nextBtn.addEventListener('click', () => goTo(current + 1, 1));
+
+            slider.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') goTo(current - 1, -1);
+                if (e.key === 'ArrowRight') goTo(current + 1, 1);
+            });
+
+            let startX = 0, startY = 0;
+            slider.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+            slider.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].clientX - startX;
+                const dy = e.changedTouches[0].clientY - startY;
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+                    if (dx < 0) goTo(current + 1, 1);
+                    else goTo(current - 1, -1);
+                }
+            }, { passive: true });
+
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && !running) scheduleNext();
+            });
+
+            showOnly(0);
+            updateIndicators(0);
+            scheduleNext();
+        }
+
+        initCardSlider('projects');
+        initCardSlider('certs');
+
+        // Skills: wait while hovering a card (to reach Read more), touching, or while the details window is open
+        (function () {
+            const s = document.getElementById('skills-slider');
+            let hovering = false, touchUntil = 0, focusing = false;
+            if (s) {
+                s.addEventListener('mouseenter', () => { hovering = true; });
+                s.addEventListener('mouseleave', () => { hovering = false; });
+                s.addEventListener('focusin', (e) => { if (e.target.matches(':focus-visible')) focusing = true; });
+                s.addEventListener('focusout', () => { focusing = false; });
+                s.addEventListener('touchstart', () => { touchUntil = Date.now() + 5000; }, { passive: true });
+            }
+            initCardSlider('skills', {
+                isPaused: () => {
+                    const modal = document.getElementById('skill-modal');
+                    return hovering || focusing || Date.now() < touchUntil || (modal && !modal.hidden);
+                }
+            });
+        })();
+
+        // --- SKILL DETAILS WINDOW ---
+        (function () {
+            const modal = document.getElementById('skill-modal');
+            if (!modal) return;
+
+            const box = modal.querySelector('.skill-modal-box');
+            const titleEl = document.getElementById('skill-modal-title');
+            const itemsEl = document.getElementById('skill-modal-items');
+            const imageEl = document.getElementById('skill-modal-image');
+            const closeBtn = document.getElementById('skill-modal-close');
+            let lastTrigger = null;
+
+            function openModal(card, trigger) {
+                titleEl.textContent = card.dataset.skillTitle || '';
+                itemsEl.innerHTML = '';
+                (card.dataset.skillItems || '').split(',').forEach((item) => {
+                    const text = item.trim();
+                    if (!text) return;
+                    const li = document.createElement('li');
+                    li.textContent = text;
+                    itemsEl.appendChild(li);
+                });
+
+                // show the same image only if the card actually has one
+                const img = card.querySelector('.skill-card-img');
+                imageEl.style.backgroundImage = img ? 'url("' + img.getAttribute('src') + '")' : '';
+                imageEl.style.display = img ? '' : 'none';
+
+                lastTrigger = trigger;
+                modal.hidden = false;
+                document.body.style.overflow = 'hidden';
+                closeBtn.focus();
+            }
+
+            function closeModal() {
+                if (modal.hidden) return;
+                modal.hidden = true;
+                document.body.style.overflow = '';
+                if (lastTrigger) lastTrigger.focus();
+            }
+
+            document.querySelectorAll('.skill-card .skill-readmore').forEach((btn) => {
+                btn.addEventListener('click', () => openModal(btn.closest('.skill-card'), btn));
+            });
+
+            // Click anywhere outside the window (the main website area) closes it
+            modal.addEventListener('click', (e) => {
+                if (!box.contains(e.target)) closeModal();
+            });
+            closeBtn.addEventListener('click', closeModal);
+
+            document.addEventListener('keydown', (e) => {
+                if (modal.hidden) return;
+                if (e.key === 'Escape') closeModal();
+                if (e.key === 'Tab') { e.preventDefault(); closeBtn.focus(); }
+            });
+        })();
+
+        // --- HEADER LOGO: scroll back to the top ---
+        (function () {
+            const logo = document.getElementById('brand-home');
+            if (!logo) return;
+
+            function goTop() {
+                const toggle = document.getElementById('menu-toggle');
+                if (toggle) toggle.checked = false;   // close the phone menu if it is open
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            logo.addEventListener('click', goTop);
+            logo.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    goTop();
+                }
+            });
+        })();
     </script>
 
 </body>
