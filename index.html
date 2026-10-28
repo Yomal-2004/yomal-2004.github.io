@@ -1232,7 +1232,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: filter 0.45s ease, transform 0.45s ease;
+            transition: filter 0.45s ease;
         }
 
         .skill-card::after {
@@ -1269,7 +1269,6 @@
         .skill-card:hover .skill-card-img,
         .skill-card:focus-within .skill-card-img {
             filter: blur(7px);
-            transform: scale(1.08);
         }
 
         .skill-card:hover::after,
@@ -1371,6 +1370,26 @@
             background: rgba(56, 189, 248, 0.08);
             color: var(--text-main);
             font-size: 0.9rem;
+        }
+
+        .skill-modal-desc {
+            margin: 0 0 1.5rem;
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .skill-modal-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .skill-modal-view {
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 0.6rem 1.4rem;
+            text-decoration: none;
         }
 
         .skill-modal-close {
@@ -1703,8 +1722,8 @@
                 <h1>Hello, I'm Yomal Daluwatta</h1>
                 <p>I am an aspiring Data Science Undergraduate Student with a passion for building clean, efficient, and user-centric web applications. Focused on continuous learning and solving complex real-world problems through robust code.</p>
                 <div class="cta-row">
-                    <a href="my_resume.pdf" class="action-link btn-filled" download>Download CV</a>
-                    <a href="#contact" class="action-link btn-filled">Initialize Collaboration</a>
+                    <a href="CV.pdf" class="action-link btn-filled" target="_blank" rel="noopener noreferrer">View CV</a>
+                    <a href="#contact" class="action-link btn-filled">Let's Connect</a>
                 </div>
             </div>
             <div class="photo-wrapper">
@@ -1747,8 +1766,8 @@
                 <div class="timeline-block">
                     <div class="timeline-indicator-node"></div>
                     <h3 style="font-size: 1.3rem;">G.C.E. Ordinary Level</h3>
-                    <div style="color: var(--accent-blue); font-weight: 600; font-size: 0.95rem; margin: 0.25rem 0;">Rajasinghe Central College Ruwanwella (Completed - 2020)</div>
-                    <p style="color: var(--text-sub); max-width: 720px;">Successfully completed secondary education in the Technology stream.</p>
+                    <div style="color: var(--accent-blue); font-weight: 600; font-size: 0.95rem; margin: 0.25rem 0;">Siriwardhana National School Yatiyantota (Completed - 2020)</div>
+                    <p style="color: var(--text-sub); max-width: 720px;">Successfully completed Ordinary Level</p>
                 </div>
             </div>
         </section>
@@ -1769,102 +1788,43 @@
                                 <img src="projects/p1.jpg"Student Record Management System Screenshot">
                             </div>
                         <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Student Record Management System</h3>
-                            <div class="card-label-tagline">Data Management Application</div>
-                            <p style="color: var(--text-sub);">A comprehensive solution for managing student records with a focus on data integrity and user efficiency.</p>
+                            <h3 class="card-heading-title">Contact Management System</h3>
+                            <div class="card-label-tagline">Python Application</div>
+                            <p style="color: var(--text-sub);">This application can be save,read,update and delete phone numbers easily.</p>
                             <div class="pill-cluster"><span class="tech-pill">Python tkinter</span></div>
                             <div class="project-open-row">
-                                <a href="https://github.com/Yomal-2004/Student-Record-Management-System" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
+                                <a href="https://github.com/Yomal-2004/contact-management-system" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
                             </div>
                         </div>
                     </article>
                     <article class="project-card">
                         <div class="project-thumb placeholder" aria-hidden="true">02</div>
                         <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Sales Forecasting Model</h3>
+                            <h3 class="card-heading-title">Hospital Management System</h3>
                             <div class="card-label-tagline">Machine Learning (Example)</div>
                             <p style="color: var(--text-sub);">Time-series forecasting pipeline that predicts monthly sales and reports clear error metrics.</p>
-                            <div class="pill-cluster"><span class="tech-pill">Python</span><span class="tech-pill">scikit-learn</span></div>
+                            <div class="pill-cluster"><span class="tech-pill">SpringBoot Framework</span><span class="tech-pill">MySQL</span></div>
                             <div class="project-open-row">
-                                <a href="https://github.com/Yomal-2004/sales-forecasting-model" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
+                                <a href="https://github.com/Yomal-2004/HospitalMS" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
                             </div>
                         </div>
                     </article>
-                    <article class="project-card">
+                    <!--article class="project-card">
                         <div class="project-thumb placeholder" aria-hidden="true">03</div>
                         <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Customer Churn Predictor</h3>
+                            <h3 class="card-heading-title">Vehicle Management System</h3>
                             <div class="card-label-tagline">Data Science (Example)</div>
                             <p style="color: var(--text-sub);">Classification model that flags customers likely to leave, with feature importance and a simple report.</p>
-                            <div class="pill-cluster"><span class="tech-pill">R</span><span class="tech-pill">Random Forest</span></div>
+                            <div class="pill-cluster"><span class="tech-pill">Python</span><span class="tech-pill">FastAPI</span></div>
                             <div class="project-open-row">
                                 <a href="https://github.com/Yomal-2004/customer-churn-predictor" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
                             </div>
                         </div>
-                    </article>
-                    <article class="project-card">
-                        <div class="project-thumb placeholder" aria-hidden="true">04</div>
-                        <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Azure Data Pipeline</h3>
-                            <div class="card-label-tagline">Data Engineering (Example)</div>
-                            <p style="color: var(--text-sub);">Automated ETL workflow that ingests raw files, cleans them and loads analysis-ready tables.</p>
-                            <div class="pill-cluster"><span class="tech-pill">Azure</span><span class="tech-pill">SQL</span><span class="tech-pill">Python</span></div>
-                            <div class="project-open-row">
-                                <a href="https://github.com/Yomal-2004/azure-data-pipeline" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
-                            </div>
-                        </div>
-                    </article>
+                    </article-->
                 </div>
-                <div class="projects-page" role="group" aria-roledescription="slide">
-                    <article class="project-card">
-                        <div class="project-thumb placeholder" aria-hidden="true">05</div>
-                        <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Sentiment Analysis Dashboard</h3>
-                            <div class="card-label-tagline">NLP (Example)</div>
-                            <p style="color: var(--text-sub);">Interactive dashboard that scores customer reviews and summarises key positive and negative themes.</p>
-                            <div class="pill-cluster"><span class="tech-pill">Python</span><span class="tech-pill">NLTK</span></div>
-                            <div class="project-open-row">
-                                <a href="https://github.com/Yomal-2004/sentiment-analysis-dashboard" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="project-card">
-                        <div class="project-thumb placeholder" aria-hidden="true">06</div>
-                        <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Portfolio Chatbot</h3>
-                            <div class="card-label-tagline">Web Application (Example)</div>
-                            <p style="color: var(--text-sub);">Lightweight rule-based assistant that answers visitor questions about skills, education and projects.</p>
-                            <div class="pill-cluster"><span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JavaScript</span></div>
-                            <div class="project-open-row">
-                                <a href="https://github.com/Yomal-2004/portfolio-chatbot" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="project-card">
-                        <div class="project-thumb placeholder" aria-hidden="true">07</div>
-                        <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Library Management System</h3>
-                            <div class="card-label-tagline">Java Application (Example)</div>
-                            <p style="color: var(--text-sub);">Desktop application for tracking books, members and loans with a clean, validated data layer.</p>
-                            <div class="pill-cluster"><span class="tech-pill">Java</span><span class="tech-pill">SQL</span></div>
-                            <div class="project-open-row">
-                                <a href="https://github.com/Yomal-2004/library-management-system" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="project-card">
-                        <div class="project-thumb placeholder" aria-hidden="true">08</div>
-                        <div class="card-inner-layer">
-                            <h3 class="card-heading-title">COVID-19 Data Explorer</h3>
-                            <div class="card-label-tagline">Data Visualisation (Example)</div>
-                            <p style="color: var(--text-sub);">Exploratory analysis of public health data with charts and region-level comparisons.</p>
-                            <div class="pill-cluster"><span class="tech-pill">Python</span><span class="tech-pill">Matplotlib</span></div>
-                            <div class="project-open-row">
-                                <a href="https://github.com/Yomal-2004/covid-data-explorer" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Open</a>
-                            </div>
-                        </div>
-                    </article>
-                </div>
+                <!--div class="projects-page" role="group" aria-roledescription="slide">
+                ---------------------------  for add new page  --------------------------- 
+                </div-->
                     </div>
                 </div>
                 <div class="slider-dots" id="projects-dots"></div>
@@ -1886,10 +1846,10 @@
                     <article class="project-card">
                         <div class="project-thumb cert-thumb">
                             <span class="cert-thumb-label">Certificate image</span>
-                            <img src="certificates/c1.jpg" alt="Data Science - Work with Data certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
+                            <img src="certificates/c1.jpg" alt="DP Education - completed over 250 projects" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
                         </div>
                         <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Data Science - Work with Data</h3>
+                            <h5 class="card-heading-title">DP Education - completed over 250 projects</h5>
                             <div class="project-open-row">
                                 <a href="certificates/c1.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
                             </div>
@@ -1901,7 +1861,7 @@
                             <img src="certificates/c2.jpg" alt="Data Science - Visualizing Data and Exploring Models certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
                         </div>
                         <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Data Science - Visualizing Data and Exploring Models</h3>
+                            <h5 class="card-heading-title">National Productivity Secretariat - Peoductitvity & Quality Management</h5>
                             <div class="project-open-row">
                                 <a href="certificates/c2.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
                             </div>
@@ -1910,10 +1870,10 @@
                     <article class="project-card">
                         <div class="project-thumb cert-thumb">
                             <span class="cert-thumb-label">Certificate image</span>
-                            <img src="certificates/c3.jpg" alt="Data Science and Business Analytics certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
+                            <img src="certificates/c3.jpg" alt="Microsoft Foundry: Customize Your First Al Agent." loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
                         </div>
                         <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Data Science and Business Analytics</h3>
+                            <h5 class="card-heading-title">Microsoft Foundry - Customize Your First Al Agent</h5>
                             <div class="project-open-row">
                                 <a href="certificates/c3.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
                             </div>
@@ -1924,79 +1884,17 @@
                     <article class="project-card">
                         <div class="project-thumb cert-thumb">
                             <span class="cert-thumb-label">Certificate image</span>
-                            <img src="Microsoft_Azure_certificate.jpg" alt="Introduction to Microsoft Azure Data Relational data in Azure certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
+                            <img src="certificates/c4.png" alt="Microsoft Foundry: Customize Your First Al Agent." loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
                         </div>
                         <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Introduction to Microsoft Azure Data Relational data in Azure</h3>
+                            <h5 class="card-heading-title">Microsoft Foundry - Customize Your First Al Agent</h5>
                             <div class="project-open-row">
-                                <a href="Microsoft_Azure_certificate.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
+                                <a href="certificates/c4.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
                             </div>
                         </div>
-                    </article>
-                    <article class="project-card">
-                        <div class="project-thumb cert-thumb">
-                            <span class="cert-thumb-label">Certificate image</span>
-                            <img src="Coursera_certificate 01.jpg" alt="Build a free website with WordPress certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
-                        </div>
-                        <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Build a free website with WordPress</h3>
-                            <div class="project-open-row">
-                                <a href="Coursera_certificate 01.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="project-card">
-                        <div class="project-thumb cert-thumb">
-                            <span class="cert-thumb-label">Certificate image</span>
-                            <img src="Coursera_certificate 02.jpg" alt="Graphic design certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
-                        </div>
-                        <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Graphic design</h3>
-                            <div class="project-open-row">
-                                <a href="Coursera_certificate 02.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
-                            </div>
-                        </div>
-                    </article>
+                    </article> 
                 </div>
-                <div class="projects-page cols-3" role="group" aria-roledescription="slide">
-                    <article class="project-card">
-                        <div class="project-thumb cert-thumb">
-                            <span class="cert-thumb-label">Certificate image</span>
-                            <img src="Coursera_certificate 03.jpg" alt="Getting Started in Google Analytics certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
-                        </div>
-                        <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Getting Started in Google Analytics</h3>
-                            <div class="project-open-row">
-                                <a href="Coursera_certificate 03.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="project-card">
-                        <div class="project-thumb cert-thumb">
-                            <span class="cert-thumb-label">Certificate image</span>
-                            <img src="Simplilearn_certificate 02.jpg" alt="Become a Data Scientist: Statistics for Data Science certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
-                        </div>
-                        <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Become a Data Scientist: Statistics for Data Science</h3>
-                            <div class="project-open-row">
-                                <a href="Simplilearn_certificate 02.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="project-card">
-                        <div class="project-thumb cert-thumb">
-                            <span class="cert-thumb-label">Certificate image</span>
-                            <img src="Coursera_certificate 04.jpg" alt="Working with BigQuery certificate" loading="lazy" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">
-                        </div>
-                        <div class="card-inner-layer">
-                            <h3 class="card-heading-title">Working with BigQuery</h3>
-                            <div class="project-open-row">
-                                <a href="Coursera_certificate 04.pdf" target="_blank" rel="noopener noreferrer" class="action-link btn-bordered project-open-btn">Certificate pdf</a>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-                    </div>
+                   </div>
                 </div>
                 <div class="slider-dots" id="certs-dots"></div>
                 <div class="slider-counter" id="certs-counter" aria-live="polite"></div>
@@ -2014,30 +1912,28 @@
                 <div class="projects-viewport">
                     <div class="projects-track" id="skills-track">
                 <div class="projects-page cols-2" role="group" aria-roledescription="slide">
-                    <div class="skills-matrix-node skill-card" role="group" aria-label="Languages &amp; Frameworks" data-skill-title="Languages &amp; Frameworks" data-skill-items="Python, R, Java, HTML, SQL" data-skill-image="skill_languages_frameworks.jpg">
-                        <img class="skill-card-img" src="skills/s1.png" alt="" loading="lazy" onerror="this.remove()">
+                    <div class="skills-matrix-node skill-card" role="group" aria-label="LILIT" data-skill-title="Teaching courses &amp; Frameworks" data-skill-desc="In the LILIT, I tought some courses." data-skill-link="https://www.youtube.com/watch?v=fse4erBgLas" data-skill-image="skill_languages_frameworks.jpg">
+                        <img class="skill-card-img" src="skills/s1.jpg" alt="" loading="lazy" onerror="this.remove()">
                         <button type="button" class="action-link btn-bordered skill-readmore">Read more</button>
                     </div>
-                    <div class="skills-matrix-node skill-card" role="group" aria-label="Cloud &amp; AI Platforms" data-skill-title="Cloud &amp; AI Platforms" data-skill-items="Azure AI" data-skill-image="skill_cloud_ai.jpg">
-                        <img class="skill-card-img" src="skills/s2.png" alt="" loading="lazy" onerror="this.remove()">
+                    <div class="skills-matrix-node skill-card" role="group" aria-label="LILIT02" data-skill-title="Work as a Content Creator" data-skill-desc="Creating video of new treanding topics about AI technology" data-skill-link="https://web.facebook.com/share/r/1Mr2aegqN4/" data-skill-image="skill_cloud_ai.jpg">
+                        <img class="skill-card-img" src="skills/s2.jpg" alt="" loading="lazy" onerror="this.remove()">
                         <button type="button" class="action-link btn-bordered skill-readmore">Read more</button>
                     </div>
                 </div>
                 <div class="projects-page cols-2" role="group" aria-roledescription="slide">
-                    <div class="skills-matrix-node skill-card" role="group" aria-label="Data Engineering" data-skill-title="Data Engineering" data-skill-items="Data Pipelines, Dataset Analysis, Data Wrangling" data-skill-image="skill_data_engineering.jpg">
-                        <img class="skill-card-img" src="skills/s3.png" alt="" loading="lazy" onerror="this.remove()">
+                    <div class="skills-matrix-node skill-card" role="group" aria-label="VK Project" data-skill-title="Building AI Characters" data-skill-desc="In the VisitKitulgala Project, I handle that fb page." data-skill-link="https://web.facebook.com/share/v/19rsKE8mAB/" data-skill-image="skills/s3.jpg">
+                        <img class="skill-card-img" src="skills/s3.jpg" alt="" loading="lazy" onerror="this.remove()">
                         <button type="button" class="action-link btn-bordered skill-readmore">Read more</button>
                     </div>
-                    <div class="skills-matrix-node skill-card" role="group" aria-label="Data Science &amp; ML" data-skill-title="Data Science &amp; ML" data-skill-items="Predictive Modeling, Machine Learning Models, Core Statistical Concepts" data-skill-image="skill_data_science_ml.jpg">
+                    <div class="skills-matrix-node skill-card" role="group" aria-label="Nextgen Group" data-skill-title="Handling FB Group" data-skill-desc="In the NextGen Group, I publish posts about new technology trends." data-skill-link="https://web.facebook.com/share/p/19gZVDsdh3/" data-skill-image="skills/s4.jpg">
+                        <img class="skill-card-img" src="skills/s4.jpg" alt="" loading="lazy" onerror="this.remove()">
+                        <button type="button" class="action-link btn-bordered skill-readmore">Read more</button>
+                    </div>
+                    <!--div class="skills-matrix-node skill-card" role="group" aria-label="Data Science &amp; ML" data-skill-title="Data Science &amp; ML" data-skill-desc="Creating predictive models and machine learning solutions grounded in core statistical concepts." data-skill-link="https://scikit-learn.org" data-skill-image="skill_data_science_ml.jpg">
                         <img class="skill-card-img" src="skill_data_science_ml.jpg" alt="" loading="lazy" onerror="this.remove()">
                         <button type="button" class="action-link btn-bordered skill-readmore">Read more</button>
-                    </div>
-                </div>
-                <div class="projects-page cols-2" role="group" aria-roledescription="slide">
-                    <div class="skills-matrix-node skill-card" role="group" aria-label="Business Intelligence" data-skill-title="Business Intelligence" data-skill-items="Business Analytics, Data Visualization, Insights Generation" data-skill-image="skill_business_intelligence.jpg">
-                        <img class="skill-card-img" src="skill_business_intelligence.jpg" alt="" loading="lazy" onerror="this.remove()">
-                        <button type="button" class="action-link btn-bordered skill-readmore">Read more</button>
-                    </div>
+                    </div-->
                 </div>
                     </div>
                 </div>
@@ -2059,18 +1955,18 @@
                 <div class="gallery-item g5"><img src="gallery/g7.jpg" alt="Gallery photo 5" loading="lazy" onerror="this.remove()"></div>
                 <div class="gallery-item g6"><img src="gallery/g6.jpg" alt="Gallery photo 6" loading="lazy" onerror="this.remove()"></div>
                 <div class="gallery-item g7"><img src="gallery/g5.jpg" alt="Gallery photo 7" loading="lazy" onerror="this.remove()"></div>
-                <div class="gallery-item g8"><img src="gallery_08.jpg" alt="Gallery photo 8" loading="lazy" onerror="this.remove()"></div>
+                <!--div class="gallery-item g8"><img src="gallery_08.jpg" alt="Gallery photo 8" loading="lazy" onerror="this.remove()"></div>
                 <div class="gallery-item g9"><img src="gallery_09.jpg" alt="Gallery photo 9" loading="lazy" onerror="this.remove()"></div>
                 <div class="gallery-item g10"><img src="gallery_10.jpg" alt="Gallery photo 10" loading="lazy" onerror="this.remove()"></div>
                 <div class="gallery-item g11"><img src="gallery_11.jpg" alt="Gallery photo 11" loading="lazy" onerror="this.remove()"></div>
                 <div class="gallery-item g12"><img src="gallery_12.jpg" alt="Gallery photo 12" loading="lazy" onerror="this.remove()"></div>
-                <div class="gallery-item g13"><img src="gallery_13.jpg" alt="Gallery photo 13" loading="lazy" onerror="this.remove()"></div>
+                <div class="gallery-item g13"><img src="gallery_13.jpg" alt="Gallery photo 13" loading="lazy" onerror="this.remove()"></div-->
             </div>
         </section>
 
         <section id="contact" style="padding-bottom: 8rem;" class="reveal">
             <div class="network-contact-box">
-                <h2 style="font-size: 2.25rem; margin-bottom: 1rem; font-weight: 800;">Let's Initiate a Conversation.</h2>
+                <h2 style="font-size: 2.25rem; margin-bottom: 1rem; font-weight: 800;">Get in Touch</h2>
                 <p>I am actively exploring prospective internships, open-source collaborative efforts, or technical research projects. Reach out directly through any connection endpoint.</p>
                 <div class="cta-row" style="justify-content: center; flex-wrap: wrap;">
                     <a href="https://github.com/Yomal-2004" target="_blank" class="action-link btn-filled">GitHub Profile</a>
@@ -2085,12 +1981,13 @@
     <!-- SKILL DETAILS WINDOW -->
     <div class="skill-modal" id="skill-modal" hidden>
         <div class="skill-modal-box" role="dialog" aria-modal="true" aria-labelledby="skill-modal-title">
-            <div class="skill-modal-image" id="skill-modal-image"></div>
             <div class="skill-modal-body">
-                <div class="skills-matrix-category">Skill details</div>
                 <h3 class="skill-modal-title" id="skill-modal-title"></h3>
-                <ul class="skill-modal-items" id="skill-modal-items"></ul>
-                <button type="button" class="action-link btn-bordered skill-modal-close" id="skill-modal-close">Close</button>
+                <p class="skill-modal-desc" id="skill-modal-desc"></p>
+                <div class="skill-modal-actions">
+                    <a class="action-link btn-bordered skill-modal-view" id="skill-modal-view" href="#" target="_blank" rel="noopener noreferrer">View</a>
+                    <button type="button" class="action-link btn-bordered skill-modal-close" id="skill-modal-close">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -2104,7 +2001,7 @@
     <div class="chatbot-container" id="chat-container">
         <div class="chat-header">
             <div class="chat-header-profile">
-                <div class="chat-avatar">✨</div>
+                <div class="chat-avatar">✦︎</div>
                 <div class="chat-title-group">
                     <div class="chat-title">Yomal's AI Agent</div>
                     <div class="chat-subtitle">
@@ -2452,7 +2349,7 @@
             } else if (msg.includes('skill') || msg.includes('python') || msg.includes('java') || msg.includes('language')) {
                 return "Yomal is skilled in Python, R, Java, HTML, SQL, Azure AI, Data Engineering, and Machine Learning modeling!";
             } else if (msg.includes('education') || msg.includes('degree') || msg.includes('university') || msg.includes('school')) {
-                return "Yomal is studying for a BSc (Hons) in Data Science at Sri Lanka Technological Campus (SLTC) and completed secondary education at G/Neluwa National School.";
+                return "Yomal is studying for a BSc (Hons) in Data Science at Sri Lanka Technological Campus (SLTC) and completed secondary education at Rajasinghe Central College Ruwanwella.";
             } else if (msg.includes('project')) {
                 return "Featured project: A Student Record Management System engineered with Python tkinter!";
             } else if (msg.includes('certificate') || msg.includes('certification') || msg.includes('coursera') || msg.includes('alison')) {
@@ -2674,26 +2571,19 @@
 
             const box = modal.querySelector('.skill-modal-box');
             const titleEl = document.getElementById('skill-modal-title');
-            const itemsEl = document.getElementById('skill-modal-items');
-            const imageEl = document.getElementById('skill-modal-image');
+            const descEl = document.getElementById('skill-modal-desc');
+            const viewEl = document.getElementById('skill-modal-view');
             const closeBtn = document.getElementById('skill-modal-close');
             let lastTrigger = null;
 
             function openModal(card, trigger) {
                 titleEl.textContent = card.dataset.skillTitle || '';
-                itemsEl.innerHTML = '';
-                (card.dataset.skillItems || '').split(',').forEach((item) => {
-                    const text = item.trim();
-                    if (!text) return;
-                    const li = document.createElement('li');
-                    li.textContent = text;
-                    itemsEl.appendChild(li);
-                });
+                descEl.textContent = card.dataset.skillDesc || '';
 
-                // show the same image only if the card actually has one
-                const img = card.querySelector('.skill-card-img');
-                imageEl.style.backgroundImage = img ? 'url("' + img.getAttribute('src') + '")' : '';
-                imageEl.style.display = img ? '' : 'none';
+                // View button links to another website
+                const link = card.dataset.skillLink || '';
+                viewEl.href = link || '#';
+                viewEl.style.display = link ? '' : 'none';
 
                 lastTrigger = trigger;
                 modal.hidden = false;
